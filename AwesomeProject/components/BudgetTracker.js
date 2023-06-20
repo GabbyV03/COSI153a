@@ -49,6 +49,15 @@ const BudgetTracker = () => {
     });
   };
 
+  const handleClearCategory = (categoryIndex) => {
+    setCategories((prevCategories) => {
+      const updatedCategories = [...prevCategories];
+      updatedCategories[categoryIndex].budget = 0;
+      updatedCategories[categoryIndex].expenses = 0;
+      return updatedCategories;
+    });
+  };
+
   useEffect(() => {
     saveBudgetData();
   }, [categories]);
@@ -78,6 +87,11 @@ const BudgetTracker = () => {
           <ExpenseInput
             handleExpenseInput={handleExpenseInput}
             categoryIndex={index}
+          />
+          <Button
+            title="Clear"
+            onPress={() => handleClearCategory(index)}
+            color="red"
           />
         </View>
       ))}
