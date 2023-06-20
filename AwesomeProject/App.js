@@ -6,7 +6,7 @@ import KeyPad from './components/StackDemo';
 const App = () => {
     return (
         <View style={{flex:1}}>
-            <Text style={{textAlign:'center',fontSize:40}}>KeepUp!</Text>
+            <Text style={{textAlign:'center',fontSize:40,marginTop:50}}>KeepUp!</Text>
             <KeyPad/>
         </View>
 

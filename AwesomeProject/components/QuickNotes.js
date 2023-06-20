@@ -1,14 +1,50 @@
-import React, { useState } from 'react';
-import { View, Text, TextInput, Button, StyleSheet } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { View, Text, TextInput, Button, StyleSheet, SafeAreaView } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const QuickNotes = () => {
   const [note, setNote] = useState('');
   const [notesList, setNotesList] = useState('');
 
+  useEffect(() => {
+    loadNotes();
+  }, []);
+
+  const loadNotes = async () => {
+    try {
+      const storedNotes = await AsyncStorage.getItem('notes');
+      if (storedNotes !== null) {
+        setNotesList(storedNotes);
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const saveNotes = async (notes) => {
+    try {
+      await AsyncStorage.setItem('notes', notes);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   const handleAddNote = () => {
     if (note.trim() !== '') {
-      setNotesList(notesList + '\n' + note);
+      const updatedNotes = notesList + '\n' + note;
+      setNotesList(updatedNotes);
       setNote('');
+      saveNotes(updatedNotes);
+    }
+  };
+
+  const handleClearNotes = async () => {
+    setNotesList('');
+    setNote('');
+    try {
+      await AsyncStorage.removeItem('notes');
+    } catch (error) {
+      console.error(error);
     }
   };
 
@@ -22,6 +58,7 @@ const QuickNotes = () => {
         onChangeText={(text) => setNote(text)}
       />
       <Button title="Add" onPress={handleAddNote} />
+      <Button title="Clear" onPress={handleClearNotes} />
       <Text style={styles.notes}>{notesList}</Text>
     </View>
   );
