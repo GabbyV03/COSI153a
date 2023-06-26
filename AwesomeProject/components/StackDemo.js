@@ -5,6 +5,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import Calculator from './Calculator';
 import QuickNotes from './QuickNotes';
 import BudgetTracker from './BudgetTracker';
+import Receipt from './Receipt';
 
 const Stack = createNativeStackNavigator();
 
@@ -23,6 +24,10 @@ const HomeScreen = ({ navigation }) => {
 
   const navigateToBudgetTracker = () => {
     navigation.navigate('BudgetTracker');
+  };
+
+  const navigateToReceipt = () => {
+    navigation.navigate('Receipt');
   };
 
   return (
@@ -60,6 +65,14 @@ const HomeScreen = ({ navigation }) => {
           <Text style={styles.buttonText}>Budget Tracker</Text>
         </TouchableOpacity>
       </View>
+      <View style={styles.buttonContainer}>
+        <TouchableOpacity
+          style={[styles.button, {backgroundColor: '#A287D0'}]}
+          onPress={navigateToReceipt}
+        >
+          <Text style={styles.buttonText}>Receipt Manager</Text>
+        </TouchableOpacity>
+      </View>
     </View>
   );
 };
@@ -81,6 +94,8 @@ const MyStack = () => {
         <Stack.Screen name="Calculator" component={Calculator} />
         <Stack.Screen name="QuickNotes" component={QuickNotes} />
         <Stack.Screen name="BudgetTracker" component={BudgetTracker} />
+        <Stack.Screen name="Receipt" component={Receipt} />
+
       </Stack.Navigator>
     </NavigationContainer>
   );
