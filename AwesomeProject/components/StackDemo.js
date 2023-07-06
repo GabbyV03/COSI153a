@@ -1,17 +1,29 @@
-import * as React from 'react';
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import React from 'react';
+import { View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import Calculator from './Calculator';
 import QuickNotes from './QuickNotes';
 import BudgetTracker from './BudgetTracker';
 import Receipt from './Receipt';
+import Profile from './Profile';
 
 const Stack = createNativeStackNavigator();
 
+const ButtonWithIcon = ({ text, icon, onPress, backgroundColor }) => {
+  return (
+    <TouchableOpacity style={styles.button} onPress={onPress}>
+      <View style={styles.iconContainer}>
+        <Image source={icon} style={styles.icon} />
+      </View>
+      <Text style={styles.label}>{text}</Text>
+    </TouchableOpacity>
+  );
+};
+
 const HomeScreen = ({ navigation }) => {
   const navigateToProfile = () => {
-    navigation.navigate('Profile', { name: 'TBD' });
+    navigation.navigate('Profile');
   };
 
   const navigateToCalculator = () => {
@@ -32,53 +44,38 @@ const HomeScreen = ({ navigation }) => {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>What do you want to do today?</Text>
-      <View style={styles.buttonContainer}>
-        <TouchableOpacity
-          style={[styles.button, {backgroundColor: '#007BFF'}]}
-          onPress={navigateToProfile}
-        >
-          <Text style={styles.buttonText}>Your Profile!</Text>
-        </TouchableOpacity>
-      </View>
-      <View style={styles.buttonContainer}>
-        <TouchableOpacity
-          style={[styles.button, {backgroundColor: '#FFC107'}]}
-          onPress={navigateToCalculator}
-        >
-          <Text style={styles.buttonText}>Calculator</Text>
-        </TouchableOpacity>
-      </View>
-      <View style={styles.buttonContainer}>
-        <TouchableOpacity
-          style={[styles.button, {backgroundColor: '#DC3545'}]}
-          onPress={navigateToQuickNotes}
-        >
-          <Text style={styles.buttonText}>Off the top</Text>
-        </TouchableOpacity>
-      </View>
-      <View style={styles.buttonContainer}>
-        <TouchableOpacity
-          style={[styles.button, {backgroundColor: '#8AFF8A'}]}
-          onPress={navigateToBudgetTracker}
-        >
-          <Text style={styles.buttonText}>Budget Tracker</Text>
-        </TouchableOpacity>
-      </View>
-      <View style={styles.buttonContainer}>
-        <TouchableOpacity
-          style={[styles.button, {backgroundColor: '#A287D0'}]}
-          onPress={navigateToReceipt}
-        >
-          <Text style={styles.buttonText}>Receipt Manager</Text>
-        </TouchableOpacity>
-      </View>
+      <ButtonWithIcon
+        text="Your Profile!"
+        icon={require('../assets/ProfileIcon.png')}
+        onPress={navigateToProfile}
+        backgroundColor="#007BFF"
+      />
+      <ButtonWithIcon
+        text="Calculator"
+        icon={require('../assets/CalculatorIcon.png')}
+        onPress={navigateToCalculator}
+        backgroundColor="#FFC107"
+      />
+      <ButtonWithIcon
+        text="Quick Notes"
+        icon={require('../assets/QuickListIcon.png')}
+        onPress={navigateToQuickNotes}
+        backgroundColor="#DC3545"
+      />
+      <ButtonWithIcon
+        text="Budget Tracker"
+        icon={require('../assets/BudgetTrackerIcon.png')}
+        onPress={navigateToBudgetTracker}
+        backgroundColor="#8AFF8A"
+      />
+      <ButtonWithIcon
+        text="Receipt Manager"
+        icon={require('../assets/ReceiptIcon.png')}
+        onPress={navigateToReceipt}
+        backgroundColor="#A287D0"
+      />
     </View>
   );
-};
-
-const ProfileScreen = ({ navigation, route }) => {
-  return <Text>Welcome {route.params.name}! Here you will be able to keep track of your stats and achievements!</Text>;
 };
 
 const MyStack = () => {
@@ -90,12 +87,11 @@ const MyStack = () => {
           component={HomeScreen}
           options={{ headerShown: false }}
         />
-        <Stack.Screen name="Profile" component={ProfileScreen} />
+        <Stack.Screen name="Profile" component={Profile} />
         <Stack.Screen name="Calculator" component={Calculator} />
         <Stack.Screen name="QuickNotes" component={QuickNotes} />
         <Stack.Screen name="BudgetTracker" component={BudgetTracker} />
         <Stack.Screen name="Receipt" component={Receipt} />
-
       </Stack.Navigator>
     </NavigationContainer>
   );
@@ -107,29 +103,43 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     padding: 16,
+    backgroundColor: '#EBEAEA',
   },
   title: {
     fontSize: 24,
     fontWeight: 'bold',
     marginBottom: 16,
   },
-  buttonContainer: {
+  button: {
+    alignItems: 'center',
     marginBottom: 16,
   },
-  button: {
-    borderRadius: 50,
-    paddingVertical: 12,
-    paddingHorizontal: 24,
-    borderWidth: 2,
+  iconContainer: {
+    width: 120,
+    height: 120,
+    borderRadius: 100,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginBottom: 8,
+  },
+  icon: {
+    width: 120,
+    height: 120,
+    borderRadius: 20,
+    borderColor: '#000000',
+  },
+  label: {
+    fontSize: 14,
+    textAlign: 'center',
   },
   buttonText: {
     color: '#fff',
     fontSize: 18,
     fontWeight: 'bold',
     textAlign: 'center',
-    textShadowColor: '#000', // Shadow color
-    textShadowOffset: { width: 1, height: 1 }, // Shadow offset
-    textShadowRadius: 2, // Shadow radius
+    textShadowColor: '#000',
+    textShadowOffset: { width: 1, height: 1 },
+    textShadowRadius: 2,
   },
 });
 
